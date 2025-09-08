@@ -12,9 +12,91 @@ router.use(authenticate)
 router.use(sanitizeInput)
 
 /**
- * @route POST /api/quiz-attempts/start
- * @desc Start a new quiz attempt
- * @access Private
+ * @swagger
+ * /api/quiz-attempts/start:
+ *   post:
+ *     summary: Start a new quiz attempt
+ *     description: Begin a new quiz attempt and create session tracking
+ *     tags: [Quiz Attempts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quizId:
+ *                 type: string
+ *                 description: Quiz ID to attempt
+ *                 example: "507f1f77bcf86cd799439011"
+ *               browserInfo:
+ *                 type: object
+ *                 properties:
+ *                   userAgent:
+ *                     type: string
+ *                     example: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+ *                   platform:
+ *                     type: string
+ *                     example: "Win32"
+ *                   language:
+ *                     type: string
+ *                     example: "en-US"
+ *                   screenResolution:
+ *                     type: string
+ *                     example: "1920x1080"
+ *                   timezone:
+ *                     type: string
+ *                     example: "Asia/Ho_Chi_Minh"
+ *                 required:
+ *                   - userAgent
+ *                   - platform
+ *                   - language
+ *                   - screenResolution
+ *                   - timezone
+ *             required:
+ *               - quizId
+ *               - browserInfo
+ *     responses:
+ *       201:
+ *         description: Quiz attempt started successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         attemptId:
+ *                           type: string
+ *                           example: "507f1f77bcf86cd799439014"
+ *                         sessionId:
+ *                           type: string
+ *                           example: "sess_123456789"
+ *                         quiz:
+ *                           $ref: '#/components/schemas/Quiz'
+ *                         timeRemaining:
+ *                           type: integer
+ *                           description: Time remaining in seconds
+ *                           example: 1800
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         description: Cannot start attempt (quiz not available, max attempts reached, etc.)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundError'
  */
 router.post(
   "/start",

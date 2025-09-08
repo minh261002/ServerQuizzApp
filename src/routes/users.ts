@@ -14,9 +14,52 @@ router.use(authenticate)
 router.use(sanitizeInput)
 
 /**
- * @route GET /api/users
- * @desc Get all users with pagination and filtering
- * @access Admin only
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Get all users
+ *     description: Retrieve all users with pagination and filtering (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *       - $ref: '#/components/parameters/PageParam'
+ *       - $ref: '#/components/parameters/LimitParam'
+ *       - $ref: '#/components/parameters/SearchParam'
+ *       - name: role
+ *         in: query
+ *         description: Filter by user role
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [admin, teacher, student]
+ *       - name: isActive
+ *         in: query
+ *         description: Filter by active status
+ *         required: false
+ *         schema:
+ *           type: boolean
+ *     responses:
+ *       200:
+ *         description: Users retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/User'
+ *                     pagination:
+ *                       $ref: '#/components/schemas/PaginationInfo'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         $ref: '#/components/responses/ForbiddenError'
  */
 router.get(
   "/",
@@ -30,9 +73,54 @@ router.get(
 )
 
 /**
- * @route GET /api/users/stats
- * @desc Get user statistics
- * @access Admin only
+ * @swagger
+ * /api/users/stats:
+ *   get:
+ *     summary: Get user statistics
+ *     description: Retrieve overall user statistics (Admin only)
+ *     tags: [Users, Statistics]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *     responses:
+ *       200:
+ *         description: User statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         totalUsers:
+ *                           type: integer
+ *                           example: 1250
+ *                         activeUsers:
+ *                           type: integer
+ *                           example: 1100
+ *                         inactiveUsers:
+ *                           type: integer
+ *                           example: 150
+ *                         usersByRole:
+ *                           type: object
+ *                           properties:
+ *                             admin:
+ *                               type: integer
+ *                               example: 5
+ *                             teacher:
+ *                               type: integer
+ *                               example: 45
+ *                             student:
+ *                               type: integer
+ *                               example: 1200
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         $ref: '#/components/responses/ForbiddenError'
  */
 router.get("/stats", adminOnly, userController.getUserStats)
 
@@ -44,9 +132,76 @@ router.get("/stats", adminOnly, userController.getUserStats)
 router.get("/:id", adminOnly, validate({ params: validationSchemas.params.id }), userController.getUserById)
 
 /**
- * @route PUT /api/users/:id
- * @desc Update user
- * @access Admin only
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update user
+ *     description: Update any user by ID (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *           example: "507f1f77bcf86cd799439011"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 minLength: 3
+ *                 maxLength: 30
+ *                 pattern: "^[a-zA-Z0-9]+$"
+ *                 example: "johndoe"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "john@example.com"
+ *               firstName:
+ *                 type: string
+ *                 maxLength: 50
+ *                 example: "John"
+ *               lastName:
+ *                 type: string
+ *                 maxLength: 50
+ *                 example: "Doe"
+ *               role:
+ *                 type: string
+ *                 enum: [admin, teacher, student]
+ *                 example: "student"
+ *               isActive:
+ *                 type: boolean
+ *                 example: true
+ *             minProperties: 1
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/User'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         $ref: '#/components/responses/ForbiddenError'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundError'
  */
 router.put(
   "/:id",

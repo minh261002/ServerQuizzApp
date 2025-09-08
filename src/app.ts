@@ -17,6 +17,8 @@ import {
 import routes from "~/routes"
 import path from "path"
 import "~/utils/i18n" // Initialize i18n
+import swaggerUi from "swagger-ui-express"
+import swaggerSpecs from "~/config/swagger"
 
 /**
  * Express application class
@@ -77,6 +79,17 @@ export class App {
    * Initialize routes
    */
   private initializeRoutes(): void {
+    // Swagger documentation
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpecs, {
+        explorer: true,
+        customCss: ".swagger-ui .topbar { display: none }",
+        customSiteTitle: "Quiz App API Documentation"
+      })
+    )
+
     // API routes
     this.app.use("/api", routes)
 
@@ -95,7 +108,8 @@ export class App {
           quizResults: "/api/quiz-results",
           quizAttempts: "/api/quiz-attempts",
           statistics: "/api/statistics"
-        }
+        },
+        documentation: "/api-docs"
       })
     })
   }

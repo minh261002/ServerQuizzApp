@@ -3,6 +3,142 @@ import bcrypt from "bcryptjs"
 import { BCRYPT, COLLECTIONS } from "~/constants"
 
 /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: User unique identifier
+ *           example: "507f1f77bcf86cd799439011"
+ *         username:
+ *           type: string
+ *           description: Unique username
+ *           example: "johndoe"
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: User email address
+ *           example: "john@example.com"
+ *         firstName:
+ *           type: string
+ *           description: User first name
+ *           example: "John"
+ *         lastName:
+ *           type: string
+ *           description: User last name
+ *           example: "Doe"
+ *         role:
+ *           type: string
+ *           enum: [admin, teacher, student]
+ *           description: User role
+ *           example: "student"
+ *         isActive:
+ *           type: boolean
+ *           description: User active status
+ *           example: true
+ *         avatar:
+ *           type: string
+ *           description: URL to user avatar image
+ *           example: "/uploads/images/avatar-123456789.jpg"
+ *         dateOfBirth:
+ *           type: string
+ *           format: date
+ *           description: User date of birth
+ *           example: "1990-01-01"
+ *         phoneNumber:
+ *           type: string
+ *           description: User phone number
+ *           example: "+1234567890"
+ *         bio:
+ *           type: string
+ *           description: User biography
+ *           example: "Software developer passionate about education"
+ *         emailVerified:
+ *           type: boolean
+ *           description: Email verification status
+ *           example: true
+ *         lastLogin:
+ *           type: string
+ *           format: date-time
+ *           description: Last login timestamp
+ *           example: "2024-01-01T12:00:00Z"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: User creation timestamp
+ *           example: "2024-01-01T00:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: User last update timestamp
+ *           example: "2024-01-01T12:00:00Z"
+ *         stats:
+ *           type: object
+ *           properties:
+ *             totalQuizzesTaken:
+ *               type: integer
+ *               example: 15
+ *             totalQuizzesCreated:
+ *               type: integer
+ *               example: 5
+ *             averageScore:
+ *               type: number
+ *               example: 85.5
+ *             totalTimeSpent:
+ *               type: integer
+ *               description: Total time spent in minutes
+ *               example: 240
+ *       required:
+ *         - username
+ *         - email
+ *         - firstName
+ *         - lastName
+ *         - role
+ *
+ *     UserInput:
+ *       type: object
+ *       properties:
+ *         username:
+ *           type: string
+ *           minLength: 3
+ *           maxLength: 30
+ *           pattern: "^[a-zA-Z0-9]+$"
+ *           example: "johndoe"
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: "john@example.com"
+ *         password:
+ *           type: string
+ *           minLength: 8
+ *           pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
+ *           description: Must contain at least one uppercase letter, one lowercase letter, and one number
+ *           example: "Password123"
+ *         firstName:
+ *           type: string
+ *           maxLength: 50
+ *           example: "John"
+ *         lastName:
+ *           type: string
+ *           maxLength: 50
+ *           example: "Doe"
+ *         role:
+ *           type: string
+ *           enum: [admin, teacher, student]
+ *           default: student
+ *           example: "student"
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *         - firstName
+ *         - lastName
+ */
+
+/**
  * User interface
  */
 export interface IUser extends Document {

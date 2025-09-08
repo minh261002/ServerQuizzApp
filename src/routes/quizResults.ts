@@ -12,9 +12,86 @@ router.use(authenticate)
 router.use(sanitizeInput)
 
 /**
- * @route POST /api/quiz-results/submit
- * @desc Submit quiz answers
- * @access Private
+ * @swagger
+ * /api/quiz-results/submit:
+ *   post:
+ *     summary: Submit quiz answers
+ *     description: Submit completed quiz answers for grading
+ *     tags: [Quiz Results]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quizId:
+ *                 type: string
+ *                 description: Quiz ID
+ *                 example: "507f1f77bcf86cd799439011"
+ *               answers:
+ *                 type: object
+ *                 description: Question answers (questionIndex -> selectedOptionIndex)
+ *                 example: {"0": 1, "1": 0, "2": 3}
+ *               startTime:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Quiz start time
+ *                 example: "2024-01-01T10:00:00Z"
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Quiz end time
+ *                 example: "2024-01-01T10:30:00Z"
+ *               attemptNumber:
+ *                 type: integer
+ *                 minimum: 1
+ *                 description: Attempt number
+ *                 example: 1
+ *             required:
+ *               - quizId
+ *               - answers
+ *               - startTime
+ *               - endTime
+ *               - attemptNumber
+ *     responses:
+ *       201:
+ *         description: Quiz submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         result:
+ *                           type: object
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                             score:
+ *                               type: number
+ *                             totalPoints:
+ *                               type: number
+ *                             percentage:
+ *                               type: number
+ *                             timeSpent:
+ *                               type: integer
+ *                             passed:
+ *                               type: boolean
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundError'
  */
 router.post(
   "/submit",
@@ -31,9 +108,43 @@ router.post(
 )
 
 /**
- * @route GET /api/quiz-results/my
- * @desc Get current user's quiz results
- * @access Private
+ * @swagger
+ * /api/quiz-results/my:
+ *   get:
+ *     summary: Get my quiz results
+ *     description: Retrieve quiz results for the authenticated user
+ *     tags: [Quiz Results]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *       - $ref: '#/components/parameters/PageParam'
+ *       - $ref: '#/components/parameters/LimitParam'
+ *       - name: quizId
+ *         in: query
+ *         description: Filter by specific quiz
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: "507f1f77bcf86cd799439011"
+ *     responses:
+ *       200:
+ *         description: Quiz results retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/QuizResult'
+ *                     pagination:
+ *                       $ref: '#/components/schemas/PaginationInfo'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
  */
 router.get("/my", validate({ query: validationSchemas.pagination }), quizResultController.getUserResults)
 

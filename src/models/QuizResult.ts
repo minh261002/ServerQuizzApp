@@ -13,6 +13,109 @@ export interface IQuizAnswer {
 }
 
 /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     QuizResult:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Quiz result unique identifier
+ *           example: "507f1f77bcf86cd799439011"
+ *         userId:
+ *           type: string
+ *           description: ID of user who took the quiz
+ *           example: "507f1f77bcf86cd799439012"
+ *         quizId:
+ *           type: string
+ *           description: ID of the quiz
+ *           example: "507f1f77bcf86cd799439013"
+ *         attemptNumber:
+ *           type: integer
+ *           minimum: 1
+ *           description: Attempt number for this user
+ *           example: 1
+ *         answers:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               questionIndex:
+ *                 type: integer
+ *                 minimum: 0
+ *                 description: Index of the question
+ *                 example: 0
+ *               selectedAnswer:
+ *                 type: integer
+ *                 minimum: 0
+ *                 description: Index of selected answer
+ *                 example: 1
+ *               isCorrect:
+ *                 type: boolean
+ *                 description: Whether the answer is correct
+ *                 example: true
+ *               timeSpent:
+ *                 type: integer
+ *                 description: Time spent on this question in seconds
+ *                 example: 30
+ *               pointsAwarded:
+ *                 type: number
+ *                 description: Points awarded for this question
+ *                 example: 5
+ *         score:
+ *           type: number
+ *           description: Total score achieved
+ *           example: 85
+ *         totalPoints:
+ *           type: number
+ *           description: Maximum possible points
+ *           example: 100
+ *         percentage:
+ *           type: number
+ *           description: Score as percentage
+ *           example: 85.0
+ *         passed:
+ *           type: boolean
+ *           description: Whether the user passed the quiz
+ *           example: true
+ *         timeSpent:
+ *           type: integer
+ *           description: Total time spent in seconds
+ *           example: 1800
+ *         startTime:
+ *           type: string
+ *           format: date-time
+ *           description: Quiz start time
+ *           example: "2024-01-01T10:00:00Z"
+ *         endTime:
+ *           type: string
+ *           format: date-time
+ *           description: Quiz completion time
+ *           example: "2024-01-01T10:30:00Z"
+ *         submittedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Result submission timestamp
+ *           example: "2024-01-01T10:30:05Z"
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *         quiz:
+ *           $ref: '#/components/schemas/Quiz'
+ *       required:
+ *         - userId
+ *         - quizId
+ *         - attemptNumber
+ *         - answers
+ *         - score
+ *         - totalPoints
+ *         - percentage
+ *         - timeSpent
+ *         - startTime
+ *         - endTime
+ */
+
+/**
  * Quiz result interface
  */
 export interface IQuizResult extends Document {

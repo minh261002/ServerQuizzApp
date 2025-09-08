@@ -12,9 +12,69 @@ router.use(authenticate)
 router.use(sanitizeInput)
 
 /**
- * @route GET /api/statistics/dashboard
- * @desc Get dashboard statistics
- * @access Admin only
+ * @swagger
+ * /api/statistics/dashboard:
+ *   get:
+ *     summary: Get dashboard statistics
+ *     description: Retrieve comprehensive dashboard statistics (Admin only)
+ *     tags: [Statistics]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/LanguageHeader'
+ *     responses:
+ *       200:
+ *         description: Dashboard statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         users:
+ *                           type: object
+ *                           properties:
+ *                             total:
+ *                               type: integer
+ *                               example: 1250
+ *                             active:
+ *                               type: integer
+ *                               example: 1100
+ *                             newThisMonth:
+ *                               type: integer
+ *                               example: 85
+ *                         quizzes:
+ *                           type: object
+ *                           properties:
+ *                             total:
+ *                               type: integer
+ *                               example: 450
+ *                             published:
+ *                               type: integer
+ *                               example: 380
+ *                             createdThisMonth:
+ *                               type: integer
+ *                               example: 25
+ *                         results:
+ *                           type: object
+ *                           properties:
+ *                             total:
+ *                               type: integer
+ *                               example: 15750
+ *                             averageScore:
+ *                               type: number
+ *                               example: 78.5
+ *                             completionRate:
+ *                               type: number
+ *                               example: 92.3
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       403:
+ *         $ref: '#/components/responses/ForbiddenError'
  */
 router.get("/dashboard", adminOnly, statisticsController.getDashboardStats)
 

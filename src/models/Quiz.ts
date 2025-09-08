@@ -2,6 +2,136 @@ import mongoose, { Document, Schema, Model } from "mongoose"
 import { COLLECTIONS } from "~/constants"
 
 /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Question:
+ *       type: object
+ *       properties:
+ *         question:
+ *           type: string
+ *           maxLength: 500
+ *           description: Question text
+ *           example: "What is the capital of France?"
+ *         image:
+ *           type: string
+ *           maxLength: 255
+ *           description: URL to question image
+ *           example: "/uploads/images/question-123456789.jpg"
+ *         options:
+ *           type: array
+ *           items:
+ *             type: string
+ *           minItems: 2
+ *           maxItems: 6
+ *           description: Answer options
+ *           example: ["Paris", "London", "Berlin", "Madrid"]
+ *         correctAnswer:
+ *           type: integer
+ *           minimum: 0
+ *           description: Index of correct answer (0-based)
+ *           example: 0
+ *         explanation:
+ *           type: string
+ *           maxLength: 300
+ *           description: Explanation for the correct answer
+ *           example: "Paris is the capital and largest city of France"
+ *         points:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 1
+ *           description: Points awarded for correct answer
+ *           example: 5
+ *       required:
+ *         - question
+ *         - options
+ *         - correctAnswer
+ *         - points
+ *
+ *     Quiz:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Quiz unique identifier
+ *           example: "507f1f77bcf86cd799439011"
+ *         title:
+ *           type: string
+ *           maxLength: 100
+ *           description: Quiz title
+ *           example: "Geography Quiz"
+ *         description:
+ *           type: string
+ *           maxLength: 500
+ *           description: Quiz description
+ *           example: "Test your knowledge of world geography"
+ *         createdBy:
+ *           type: string
+ *           description: ID of user who created the quiz
+ *           example: "507f1f77bcf86cd799439012"
+ *         questions:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Question'
+ *           description: Array of quiz questions
+ *         timeLimit:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 300
+ *           description: Time limit in minutes
+ *           example: 30
+ *         difficulty:
+ *           type: string
+ *           enum: [easy, medium, hard]
+ *           default: medium
+ *           description: Quiz difficulty level
+ *           example: "medium"
+ *         category:
+ *           type: string
+ *           maxLength: 50
+ *           description: Quiz category
+ *           example: "Geography"
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *           maxItems: 10
+ *           description: Quiz tags
+ *           example: ["geography", "world", "capitals"]
+ *         isActive:
+ *           type: boolean
+ *           default: true
+ *           description: Quiz active status
+ *           example: true
+ *         isPublished:
+ *           type: boolean
+ *           default: false
+ *           description: Quiz published status
+ *           example: true
+ *         totalPoints:
+ *           type: integer
+ *           description: Total points for the quiz
+ *           example: 50
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Quiz creation timestamp
+ *           example: "2024-01-01T00:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Quiz last update timestamp
+ *           example: "2024-01-01T12:00:00Z"
+ *       required:
+ *         - title
+ *         - description
+ *         - questions
+ *         - timeLimit
+ *         - category
+ */
+
+/**
  * Question interface
  */
 export interface IQuestion {

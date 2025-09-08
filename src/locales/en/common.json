@@ -1,0 +1,75 @@
+{
+  "messages": {
+    "success": "Success",
+    "error": "Error",
+    "internalError": "Internal server error",
+    "notFound": "Resource not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "badRequest": "Bad request",
+    "validationFailed": "Validation failed"
+  },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "logoutSuccess": "Logout successful", 
+    "registerSuccess": "User registered successfully",
+    "tokenRequired": "Access token required",
+    "tokenInvalid": "Invalid or expired token",
+    "tokenExpired": "Token has expired",
+    "invalidCredentials": "Invalid credentials",
+    "accountLocked": "Account is locked due to too many failed login attempts",
+    "emailNotVerified": "Email is not verified",
+    "passwordChanged": "Password changed successfully",
+    "profileUpdated": "Profile updated successfully",
+    "preferencesUpdated": "Preferences updated successfully",
+    "avatarUploaded": "Avatar uploaded successfully",
+    "avatarDeleted": "Avatar deleted successfully",
+    "noAvatarToDelete": "No avatar to delete"
+  },
+  "validation": {
+    "required": "{{field}} is required",
+    "email": "Please provide a valid email address",
+    "minLength": "{{field}} must be at least {{min}} characters long",
+    "maxLength": "{{field}} must be less than {{max}} characters",
+    "pattern": "{{field}} format is invalid",
+    "passwordPattern": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    "usernameAlphanum": "Username can only contain letters and numbers",
+    "number": "{{field}} must be a number",
+    "min": "{{field}} must be at least {{min}}",
+    "max": "{{field}} cannot exceed {{max}}",
+    "arrayMin": "{{field}} must have at least {{min}} items",
+    "arrayMax": "{{field}} can have at most {{max}} items",
+    "enum": "{{field}} must be one of: {{values}}"
+  },
+  "quiz": {
+    "created": "Quiz created successfully",
+    "updated": "Quiz updated successfully", 
+    "deleted": "Quiz deleted successfully",
+    "retrieved": "Quiz retrieved successfully",
+    "activated": "Quiz activated successfully",
+    "deactivated": "Quiz deactivated successfully",
+    "notAvailable": "Quiz is not available",
+    "noPermission": "You do not have permission to access this quiz",
+    "noPermissionUpdate": "You do not have permission to update this quiz",
+    "noPermissionDelete": "You do not have permission to delete this quiz",
+    "noPermissionView": "You do not have permission to view quiz answers",
+    "noPermissionStats": "You do not have permission to view quiz statistics",
+    "imagesUploaded": "Images uploaded successfully",
+    "imageDeleted": "Image deleted successfully"
+  },
+  "user": {
+    "retrieved": "User retrieved successfully",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully",
+    "activated": "User activated successfully",
+    "deactivated": "User deactivated successfully",
+    "statisticsRetrieved": "User statistics retrieved successfully"
+  },
+  "upload": {
+    "noImages": "No images uploaded",
+    "noAvatar": "No avatar image uploaded",
+    "invalidFormat": "Invalid file extension. Only JPG, JPEG, PNG, GIF, WebP, and SVG files are allowed",
+    "onlyImages": "Only image files are allowed",
+    "fileTooLarge": "File size cannot exceed 5MB"
+  }
+}

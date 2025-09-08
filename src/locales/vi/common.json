@@ -1,0 +1,75 @@
+{
+  "messages": {
+    "success": "Thành công",
+    "error": "Lỗi",
+    "internalError": "Lỗi máy chủ nội bộ",
+    "notFound": "Không tìm thấy tài nguyên",
+    "unauthorized": "Truy cập không được phép",
+    "forbidden": "Truy cập bị cấm",
+    "badRequest": "Yêu cầu không hợp lệ",
+    "validationFailed": "Xác thực thất bại"
+  },
+  "auth": {
+    "loginSuccess": "Đăng nhập thành công",
+    "logoutSuccess": "Đăng xuất thành công",
+    "registerSuccess": "Đăng ký người dùng thành công",
+    "tokenRequired": "Cần có mã truy cập",
+    "tokenInvalid": "Mã truy cập không hợp lệ hoặc đã hết hạn",
+    "tokenExpired": "Mã truy cập đã hết hạn",
+    "invalidCredentials": "Thông tin đăng nhập không hợp lệ",
+    "accountLocked": "Tài khoản bị khóa do quá nhiều lần đăng nhập sai",
+    "emailNotVerified": "Email chưa được xác thực",
+    "passwordChanged": "Đổi mật khẩu thành công",
+    "profileUpdated": "Cập nhật hồ sơ thành công",
+    "preferencesUpdated": "Cập nhật tùy chọn thành công",
+    "avatarUploaded": "Tải lên ảnh đại diện thành công",
+    "avatarDeleted": "Xóa ảnh đại diện thành công",
+    "noAvatarToDelete": "Không có ảnh đại diện để xóa"
+  },
+  "validation": {
+    "required": "{{field}} là bắt buộc",
+    "email": "Vui lòng cung cấp địa chỉ email hợp lệ",
+    "minLength": "{{field}} phải có ít nhất {{min}} ký tự",
+    "maxLength": "{{field}} phải ít hơn {{max}} ký tự",
+    "pattern": "Định dạng {{field}} không hợp lệ",
+    "passwordPattern": "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường và một số",
+    "usernameAlphanum": "Tên người dùng chỉ có thể chứa chữ cái và số",
+    "number": "{{field}} phải là một số",
+    "min": "{{field}} phải ít nhất là {{min}}",
+    "max": "{{field}} không thể vượt quá {{max}}",
+    "arrayMin": "{{field}} phải có ít nhất {{min}} mục",
+    "arrayMax": "{{field}} có thể có tối đa {{max}} mục",
+    "enum": "{{field}} phải là một trong: {{values}}"
+  },
+  "quiz": {
+    "created": "Tạo bài kiểm tra thành công",
+    "updated": "Cập nhật bài kiểm tra thành công",
+    "deleted": "Xóa bài kiểm tra thành công",
+    "retrieved": "Lấy bài kiểm tra thành công",
+    "activated": "Kích hoạt bài kiểm tra thành công",
+    "deactivated": "Vô hiệu hóa bài kiểm tra thành công",
+    "notAvailable": "Bài kiểm tra không khả dụng",
+    "noPermission": "Bạn không có quyền truy cập bài kiểm tra này",
+    "noPermissionUpdate": "Bạn không có quyền cập nhật bài kiểm tra này",
+    "noPermissionDelete": "Bạn không có quyền xóa bài kiểm tra này",
+    "noPermissionView": "Bạn không có quyền xem đáp án bài kiểm tra",
+    "noPermissionStats": "Bạn không có quyền xem thống kê bài kiểm tra",
+    "imagesUploaded": "Tải lên hình ảnh thành công",
+    "imageDeleted": "Xóa hình ảnh thành công"
+  },
+  "user": {
+    "retrieved": "Lấy thông tin người dùng thành công",
+    "updated": "Cập nhật người dùng thành công",
+    "deleted": "Xóa người dùng thành công",
+    "activated": "Kích hoạt người dùng thành công",
+    "deactivated": "Vô hiệu hóa người dùng thành công",
+    "statisticsRetrieved": "Lấy thống kê người dùng thành công"
+  },
+  "upload": {
+    "noImages": "Không có hình ảnh nào được tải lên",
+    "noAvatar": "Không có ảnh đại diện nào được tải lên",
+    "invalidFormat": "Định dạng file không hợp lệ. Chỉ chấp nhận file JPG, JPEG, PNG, GIF, WebP và SVG",
+    "onlyImages": "Chỉ chấp nhận file hình ảnh",
+    "fileTooLarge": "Kích thước file không được vượt quá 5MB"
+  }
+}

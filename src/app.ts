@@ -146,7 +146,7 @@ export class App {
 🚀 Server started successfully!
 📊 Environment: ${ENV.NODE_ENV}
 🌐 Server running on: http://${ENV.HOST}:${ENV.PORT}
-📝 API Documentation: http://${ENV.HOST}:${ENV.PORT}/api/health
+📝 API Documentation: http://${ENV.HOST}:${ENV.PORT}/api-docs
         `)
       })
     } catch (error) {

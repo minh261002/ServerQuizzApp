@@ -1,274 +1,124 @@
-# Quiz App Backend Server
+# Quiz App Backend (Express + TypeScript)
 
-A comprehensive backend server for a quiz application built with Express.js, TypeScript, and MongoDB. This server provides a robust API for user authentication, quiz management, and quiz-taking functionality with role-based access control.
+Backend for a quiz application built with Express.js, TypeScript, and MongoDB. It provides authentication, user management, quiz creation/taking, analytics, multi-language support, and modern security measures.
 
-## 🚀 Features
+## 🚀 Key Features
 
-- **Authentication & Authorization**: JWT-based authentication with role-based access control (Admin, Teacher, Student)
-- **User Management**: Complete user CRUD operations with profile management
-- **Quiz Management**: Create, read, update, delete quizzes with questions and answers
-- **Security**: Comprehensive security measures including rate limiting, CORS, helmet, and input validation
-- **Error Handling**: Centralized error handling with custom error classes
-- **Validation**: Input validation using Joi schema validation
-- **Database**: MongoDB with Mongoose ODM
-- **Architecture**: Clean architecture with OOP principles, services, and controllers
-- **Middleware**: Custom middleware for authentication, validation, error handling, and security
-- **TypeScript**: Full TypeScript support with strict type checking
+- **Auth & RBAC**: JWT authentication with role-based access (Admin, Teacher, Student)
+- **User Management**: Profile, avatar, active status, roles
+- **Quiz Management**: Create/update/delete quizzes, question bank, time limit, difficulty, category, tags
+- **Taking & Scoring**: Progress tracking, autosave, pause/resume, anti-cheat, leaderboard
+- **Results & Analytics**: Detailed results, dashboards, statistics
+- **Uploads**: Question images and user avatars
+- **Security**: Rate limiting, CORS, Helmet, input validation/sanitization, password hashing
+- **Clean Architecture**: Clear Controller/Service/Model/Middleware layers, strict TypeScript
 
-## 🏗️ Architecture
+## 📚 API Docs (Swagger)
 
-The application follows a clean architecture pattern with the following structure:
+- Swagger UI: `http://<HOST>:<PORT>/api-docs`
+
+## 🏗️ Project Structure
 
 ```
 src/
-├── constants/          # Application constants and configuration
-├── controllers/        # Request handlers (BaseController, AuthController, etc.)
-├── middlewares/        # Custom middleware (auth, validation, error handling, security)
-├── models/            # Database models (User, Quiz)
-├── routes/            # API routes definition
-├── services/          # Business logic layer (BaseService, UserService, QuizService)
-├── utils/             # Utility functions (errors, async handlers, database)
-├── app.ts             # Express application setup
-├── index.ts           # Application entry point
-└── type.d.ts          # Global type definitions
+├── constants/          # Constants and config
+├── controllers/        # Request handlers (AuthController, QuizController, ...)
+├── middlewares/        # auth, validation, error handler, security, i18n
+├── models/             # Mongoose models (User, Quiz, QuizAttempt, ...)
+├── routes/             # API routes
+├── services/           # Business logic (UserService, QuizService, ...)
+├── utils/              # Utilities (errors, asyncHandler, database, i18n)
+├── app.ts              # Express app initialization, middlewares
+├── index.ts            # Entry point
+└── type.d.ts           # Global types
 ```
 
-## 📋 Prerequisites
+## 📋 Requirements
 
-- Node.js (v18 or higher)
-- MongoDB (v5.0 or higher)
+- Node.js >= 18
+- MongoDB >= 5
 - npm or yarn
 
-## 🛠️ Installation
+## 🛠️ Setup & Run
 
-1. **Clone the repository**
+1. Clone the repository
    ```bash
    git clone <repository-url>
    cd server_quizz
    ```
 
-2. **Install dependencies**
+2. Install dependencies
    ```bash
    npm install
    ```
 
-3. **Environment Configuration**
-   Create a `.env` file in the root directory:
+3. Create `.env`
    ```env
-   # Server Configuration
+   # Server
    NODE_ENV=development
    PORT=5000
    HOST=localhost
 
-   # Database Configuration
+   # Database
    MONGODB_URI=mongodb://localhost:27017/quiz_app
    DB_NAME=quiz_app
 
-   # JWT Configuration
-   JWT_SECRET=your-super-secret-jwt-key-change-in-production
+   # JWT
+   JWT_SECRET=change-me
    JWT_EXPIRES_IN=7d
-   JWT_REFRESH_SECRET=your-super-secret-refresh-jwt-key-change-in-production
+   JWT_REFRESH_SECRET=change-me-too
    JWT_REFRESH_EXPIRES_IN=30d
 
-   # CORS Configuration
+   # CORS
    CORS_ORIGIN=http://localhost:3000
 
-   # Rate Limiting
+   # Rate limiting
    RATE_LIMIT_WINDOW_MS=900000
    RATE_LIMIT_MAX_REQUESTS=100
 
-   # Bcrypt Configuration
+   # Bcrypt
    BCRYPT_SALT_ROUNDS=12
    ```
 
-4. **Start MongoDB**
-   Make sure MongoDB is running on your system.
-
-5. **Run the application**
+4. Start MongoDB and run the app
    ```bash
-   # Development mode
+   # Development
    npm run dev
 
-   # Production mode
+   # Production
    npm run build
    npm start
    ```
 
-## 🔧 Available Scripts
+## 🔧 Scripts
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build the TypeScript project
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
-- `npm run prettier` - Check code formatting
-- `npm run prettier:fix` - Fix code formatting
+- `npm run dev`: Start dev server (hot reload)
+- `npm run build`: Build TypeScript
+- `npm start`: Start production server
+- `npm run lint`: Run lint
+- `npm run lint:fix`: Fix lint
+- `npm run prettier`: Check formatting
+- `npm run prettier:fix`: Fix formatting
 
-## 📚 API Documentation
+## 🔐 Authentication & Roles
 
-### Authentication Routes (`/api/auth`)
+- JWT: Access token (7 days), Refresh token (30 days, httpOnly cookie)
+- Roles: **Admin** (full access), **Teacher** (manage own quizzes), **Student** (take quizzes, view results)
 
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|---------|
-| POST | `/register` | Register new user | Public |
-| POST | `/login` | User login | Public |
-| POST | `/logout` | User logout | Private |
-| POST | `/refresh` | Refresh access token | Public |
-| GET | `/profile` | Get user profile | Private |
-| PUT | `/profile` | Update user profile | Private |
-| PUT | `/change-password` | Change password | Private |
+## 🛡️ Security
 
-### User Management Routes (`/api/users`)
+- Rate limiting, CORS, Helmet, input sanitization (XSS), Joi validation
+- Password hashing with bcrypt; account lockout policy for repeated failed logins
 
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|---------|
-| GET | `/` | Get all users | Admin |
-| GET | `/stats` | Get user statistics | Admin |
-| GET | `/:id` | Get user by ID | Admin |
-| PUT | `/:id` | Update user | Admin |
-| DELETE | `/:id` | Delete user | Admin |
-| PATCH | `/:id/status` | Toggle user status | Admin |
+## 🗄️ Data Models (summary)
 
-### Quiz Routes (`/api/quizzes`)
-
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|---------|
-| GET | `/` | Get all quizzes | Public |
-| POST | `/` | Create new quiz | Teacher/Admin |
-| GET | `/my` | Get user's quizzes | Teacher/Admin |
-| GET | `/popular-categories` | Get popular categories | Public |
-| GET | `/recommendations` | Get quiz recommendations | Public |
-| GET | `/:id` | Get quiz for taking | Public |
-| GET | `/:id/answers` | Get quiz with answers | Creator/Admin |
-| PUT | `/:id` | Update quiz | Creator/Admin |
-| DELETE | `/:id` | Delete quiz | Creator/Admin |
-| PATCH | `/:id/status` | Toggle quiz status | Creator/Admin |
-| GET | `/:id/stats` | Get quiz statistics | Creator/Admin |
-
-## 🔐 Authentication
-
-The API uses JWT (JSON Web Tokens) for authentication:
-
-1. **Access Token**: Short-lived token (7 days) sent in Authorization header
-2. **Refresh Token**: Long-lived token (30 days) stored in httpOnly cookie
-
-### Usage Example
-
-```javascript
-// Login
-const response = await fetch('/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ identifier: 'user@example.com', password: 'password' })
-});
-
-// Use token in subsequent requests
-const token = response.data.token;
-fetch('/api/quizzes', {
-  headers: { 'Authorization': `Bearer ${token}` }
-});
-```
-
-## 👥 User Roles
-
-- **Admin**: Full access to all resources and user management
-- **Teacher**: Can create, manage own quizzes, and view quiz statistics
-- **Student**: Can take quizzes and view results
-
-## 🛡️ Security Features
-
-- **Rate Limiting**: Prevents API abuse
-- **CORS**: Cross-origin resource sharing protection
-- **Helmet**: Security headers
-- **Input Validation**: Joi schema validation
-- **Input Sanitization**: XSS protection
-- **Password Hashing**: Bcrypt with configurable salt rounds
-- **JWT Security**: Secure token handling with refresh mechanism
-
-## 📊 Database Schema
-
-### User Model
-```typescript
-{
-  username: string;
-  email: string;
-  password: string; // hashed
-  firstName: string;
-  lastName: string;
-  role: 'admin' | 'teacher' | 'student';
-  isActive: boolean;
-  avatar?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-### Quiz Model
-```typescript
-{
-  title: string;
-  description: string;
-  createdBy: ObjectId; // User reference
-  questions: Question[];
-  timeLimit: number; // minutes
-  isActive: boolean;
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: string;
-  tags: string[];
-  totalPoints: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-### Question Schema
-```typescript
-{
-  question: string;
-  options: string[];
-  correctAnswer: number; // index of correct option
-  explanation?: string;
-  points: number;
-}
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Environment mode | `development` |
-| `PORT` | Server port | `5000` |
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/quiz_app` |
-| `JWT_SECRET` | JWT signing secret | Required |
-| `JWT_EXPIRES_IN` | Access token expiry | `7d` |
-| `CORS_ORIGIN` | Allowed CORS origins | `http://localhost:3000` |
-| `BCRYPT_SALT_ROUNDS` | Password hashing rounds | `12` |
-
-## 🧪 Testing
-
-The application includes comprehensive error handling and validation. To test the API:
-
-1. Use tools like Postman, Insomnia, or curl
-2. Start with user registration and login
-3. Use the returned JWT token for authenticated requests
-4. Test different user roles and permissions
+- `User`: profile, role, avatar, active status
+- `Quiz`: title, description, questions, time limit, difficulty, category, points, status
+- `QuizAttempt`, `QuizResult`: attempt progress, scoring, analytics
 
 ## 🚀 Deployment
 
-### Production Checklist
-
-1. Set `NODE_ENV=production`
-2. Use strong JWT secrets
-3. Configure proper CORS origins
-4. Set up MongoDB with authentication
-5. Use HTTPS in production
-6. Configure proper logging
-7. Set up monitoring and health checks
-
-### Docker Deployment
-
+Sample Dockerfile:
 ```dockerfile
 FROM node:18-alpine
 WORKDIR /app
@@ -279,33 +129,18 @@ EXPOSE 5000
 CMD ["node", "dist/index.js"]
 ```
 
+Production checklist: set `NODE_ENV=production`, strong secrets, proper CORS, HTTPS, logging/monitoring, MongoDB with auth.
+
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+1) Fork 2) Create feature branch 3) Commit 4) Push 5) Open PR
 
 ## 📝 License
 
-This project is licensed under the ISC License.
+ISC License.
 
-## 🆘 Support
+## ❓ Support
 
-For support and questions:
-- Create an issue in the repository
-- Check the API documentation
-- Review the error messages and logs
-
-## 📈 Future Enhancements
-
-- Quiz result tracking and analytics
-- Real-time quiz sessions with WebSocket
-- File upload for quiz images
-- Quiz templates and categories management
-- Email notifications
-- API documentation with Swagger
-- Unit and integration tests
-- Caching with Redis
-- Microservices architecture
+- Open an issue in the repo
+- See Swagger docs at `/api-docs`
+- Check logs and error messages for diagnosis
